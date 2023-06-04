@@ -1,60 +1,78 @@
 <?php
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-// Carga la biblioteca PHPMailer
-require 'C:/xampp/htdocs/PHPMailer-master/src/Exception.php';
-require 'C:/xampp/htdocs/PHPMailer-master/src/PHPMailer.php';
-require 'C:/xampp/htdocs/PHPMailer-master/src/SMTP.php';
 
 $errorMSG = "";
 
-// Check if all required fields are filled
-if (empty($_POST["date"]) || empty($_POST["time"]) || empty($_POST["person"]) || empty($_POST["name"]) || empty($_POST["email"]) || empty($_POST["phone"])) {
-    $errorMSG = "Please fill out all fields";
+// NAME
+if (empty($_POST["name"])) {
+    $errorMSG = "Name is required ";
 } else {
-    // Get the form data
-    $date = $_POST["date"];
-    $time = $_POST["time"];
-    $person = $_POST["person"];
     $name = $_POST["name"];
-    $email = $_POST["email"];
-    $phone = $_POST["phone"];
-
-    // Prepare email subject and body
-    $to = "11snaider99@gmail.com"; // Replace with your email address
-    $subject = "New Reservation";
-    $message = "Date: $date\n";
-    $message .= "Time: $time\n";
-    $message .= "Number of Persons: $person\n";
-    $message .= "Name: $name\n";
-    $message .= "Email: $email\n";
-    $message .= "Phone: $phone\n";
-
-    // Create a new PHPMailer instance
-    $mail = new PHPMailer();
-
-    // SMTP configuration (replace with your own)
-    $mail->isSMTP();
-    $mail->Host = 'smtp.example.com'; // Replace with your SMTP server
-    $mail->SMTPAuth = true;
-    $mail->Username = 'your-email@example.com'; // Replace with your email address
-    $mail->Password = 'your-email-password'; // Replace with your email password
-    $mail->SMTPSecure = 'tls';
-    $mail->Port = 587;
-
-    // Set the email headers
-    $mail->setFrom($email, $name);
-    $mail->addAddress($to);
-    $mail->Subject = $subject;
-    $mail->Body = $message;
-
-    // Send the email
-    if ($mail->send()) {
-        echo "success";
-    } else {
-        echo "Error sending email: " . $mail->ErrorInfo;
-    }
-    exit(); // Terminates the script after sending the email response
 }
+
+// EMAIL
+if (empty($_POST["email"])) {
+    $errorMSG .= "Email is required ";
+} else {
+    $email = $_POST["email"];
+}
+
+// MSG Guest
+if (empty($_POST["guest"])) {
+    $errorMSG .= "Subject is required ";
+} else {
+    $guest = $_POST["guest"];
+}
+
+
+// MSG Event
+if (empty($_POST["event"])) {
+    $errorMSG .= "Subject is required ";
+} else {
+    $event = $_POST["event"];
+}
+
+
+// MESSAGE
+if (empty($_POST["message"])) {
+    $errorMSG .= "Message is required ";
+} else {
+    $message = $_POST["message"];
+}
+
+
+$EmailTo = "11snaider99@gmail.com";
+$Subject = "New Message Received";
+
+// prepare email body text
+$Body = "";
+$Body .= "Name: ";
+$Body .= $name;
+$Body .= "\n";
+$Body .= "Email: ";
+$Body .= $email;
+$Body .= "\n";
+$Body .= "guest: ";
+$Body .= $guest;
+$Body .= "\n";
+$Body .= "event: ";
+$Body .= $event;
+$Body .= "\n";
+$Body .= "Message: ";
+$Body .= $message;
+$Body .= "\n";
+
+// send email
+$success = mail($EmailTo, $Subject, $Body, "From:".$email);
+
+// redirect to success page
+if ($success && $errorMSG == ""){
+   echo "success";
+}else{
+    if($errorMSG == ""){
+        echo "Something went wrong :(";
+    } else {
+        echo $errorMSG;
+    }
+}
+
 ?>
