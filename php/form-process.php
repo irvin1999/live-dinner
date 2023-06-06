@@ -1,4 +1,6 @@
 <?php
+require 'path/to/PHPMailer/PHPMailerAutoload.php'; // Reemplaza "path/to/PHPMailer" con la ruta correcta a PHPMailer en tu servidor
+
 $errorMSG = "";
 
 // Validación de los campos del formulario
@@ -8,72 +10,44 @@ if (empty($_POST["date"])) {
     $date = $_POST["date"];
 }
 
-if (empty($_POST["time"])) {
-    $errorMSG .= "Time is required ";
-} else {
-    $time = $_POST["time"];
-}
-
-if (empty($_POST["person"])) {
-    $errorMSG .= "Person is required ";
-} else {
-    $person = $_POST["person"];
-}
-
-if (empty($_POST["name"])) {
-    $errorMSG .= "Name is required ";
-} else {
-    $name = $_POST["name"];
-}
-
-if (empty($_POST["email"])) {
-    $errorMSG .= "Email is required ";
-} else {
-    $email = $_POST["email"];
-}
-
-if (empty($_POST["phone"])) {
-    $errorMSG .= "Phone is required ";
-} else {
-    $phone = $_POST["phone"];
-}
+// ... resto del código de validación de campos ...
 
 // Dirección de correo electrónico de destino
-$EmailTo = "11snaider99@gmail.com";
-$Subject = "New Table Booking";
+$EmailTo = "tucorreo@example.com"; // Reemplaza "tucorreo@example.com" con tu dirección de correo electrónico
 
-// Preparar el cuerpo del correo electrónico
-$Body = "";
-$Body .= "Date: ";
-$Body .= $date;
-$Body .= "\n";
-$Body .= "Time: ";
-$Body .= $time;
-$Body .= "\n";
-$Body .= "Person: ";
-$Body .= $person;
-$Body .= "\n";
-$Body .= "Name: ";
-$Body .= $name;
-$Body .= "\n";
-$Body .= "Email: ";
-$Body .= $email;
-$Body .= "\n";
-$Body .= "Phone: ";
-$Body .= $phone;
-$Body .= "\n";
+// Configuración del servidor SMTP de Nominalia
+$smtpHost = 'smtp.nominalia.com'; // Reemplaza con el servidor SMTP de Nominalia
+$smtpUsername = 'tucorreo@tudominio.com'; // Reemplaza con tu dirección de correo electrónico
+$smtpPassword = 'tupassword'; // Reemplaza con tu contraseña
 
-// Enviar el correo electrónico
-$success = mail($EmailTo, $Subject, $Body, "From:".$email);
+// Crear instancia de PHPMailer
+$mail = new PHPMailer;
 
-// Redireccionar a una página de éxito
-if ($success && $errorMSG == ""){
+// Configuración del servidor SMTP
+$mail->isSMTP();
+$mail->Host = $smtpHost;
+$mail->SMTPAuth = true;
+$mail->Username = $smtpUsername;
+$mail->Password = $smtpPassword;
+$mail->Port = 587; // Puerto SMTP de Nominalia (puede variar, consulta la documentación)
+
+// Configuración del mensaje
+$mail->setFrom($smtpUsername, 'Nombre Remitente'); // Reemplaza 'Nombre Remitente' con el nombre que desees
+$mail->addAddress($EmailTo);
+$mail->Subject = 'Nuevo mensaje recibido';
+
+// Contenido del mensaje
+$mail->Body = "Date: $date\n"; // Agrega los demás campos del formulario según sea necesario
+
+// Envío del correo electrónico
+if (!$mail->send()) {
+    $errorMSG = "Mailer Error: " . $mail->ErrorInfo;
+}
+
+// Redireccionar a una página de éxito o mostrar un mensaje de error
+if (empty($errorMSG)) {
     echo "success";
 } else {
-    if ($errorMSG == ""){
-        echo "Something went wrong :(";
-    } else {
-        echo $errorMSG;
-    }
+    echo $errorMSG;
 }
 ?>
