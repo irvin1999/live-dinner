@@ -1,5 +1,5 @@
 <?php
-require 'path/to/PHPMailer/PHPMailerAutoload.php'; // Reemplaza "path/to/PHPMailer" con la ruta correcta a PHPMailer en tu servidor
+require 'path/PHPMailer-master/src/PHPMailer.php'; // Reemplaza "path/to/PHPMailer" con la ruta correcta a PHPMailer en tu servidor
 
 $errorMSG = "";
 
