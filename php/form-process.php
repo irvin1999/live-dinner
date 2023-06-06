@@ -1,78 +1,79 @@
 <?php
-
 $errorMSG = "";
 
-// NAME
+// Validación de los campos del formulario
+if (empty($_POST["date"])) {
+    $errorMSG = "Date is required ";
+} else {
+    $date = $_POST["date"];
+}
+
+if (empty($_POST["time"])) {
+    $errorMSG .= "Time is required ";
+} else {
+    $time = $_POST["time"];
+}
+
+if (empty($_POST["person"])) {
+    $errorMSG .= "Person is required ";
+} else {
+    $person = $_POST["person"];
+}
+
 if (empty($_POST["name"])) {
-    $errorMSG = "Name is required ";
+    $errorMSG .= "Name is required ";
 } else {
     $name = $_POST["name"];
 }
 
-// EMAIL
 if (empty($_POST["email"])) {
     $errorMSG .= "Email is required ";
 } else {
     $email = $_POST["email"];
 }
 
-// MSG Guest
-if (empty($_POST["guest"])) {
-    $errorMSG .= "Subject is required ";
+if (empty($_POST["phone"])) {
+    $errorMSG .= "Phone is required ";
 } else {
-    $guest = $_POST["guest"];
+    $phone = $_POST["phone"];
 }
 
-
-// MSG Event
-if (empty($_POST["event"])) {
-    $errorMSG .= "Subject is required ";
-} else {
-    $event = $_POST["event"];
-}
-
-
-// MESSAGE
-if (empty($_POST["message"])) {
-    $errorMSG .= "Message is required ";
-} else {
-    $message = $_POST["message"];
-}
-
-
+// Dirección de correo electrónico de destino
 $EmailTo = "11snaider99@gmail.com";
-$Subject = "New Message Received";
+$Subject = "New Table Booking";
 
-// prepare email body text
+// Preparar el cuerpo del correo electrónico
 $Body = "";
+$Body .= "Date: ";
+$Body .= $date;
+$Body .= "\n";
+$Body .= "Time: ";
+$Body .= $time;
+$Body .= "\n";
+$Body .= "Person: ";
+$Body .= $person;
+$Body .= "\n";
 $Body .= "Name: ";
 $Body .= $name;
 $Body .= "\n";
 $Body .= "Email: ";
 $Body .= $email;
 $Body .= "\n";
-$Body .= "guest: ";
-$Body .= $guest;
-$Body .= "\n";
-$Body .= "event: ";
-$Body .= $event;
-$Body .= "\n";
-$Body .= "Message: ";
-$Body .= $message;
+$Body .= "Phone: ";
+$Body .= $phone;
 $Body .= "\n";
 
-// send email
+// Enviar el correo electrónico
 $success = mail($EmailTo, $Subject, $Body, "From:".$email);
 
-// redirect to success page
+// Redireccionar a una página de éxito
 if ($success && $errorMSG == ""){
-   echo "success";
-}else{
-    if($errorMSG == ""){
+    echo "success";
+} else {
+    if ($errorMSG == ""){
         echo "Something went wrong :(";
     } else {
         echo $errorMSG;
     }
 }
-
 ?>
