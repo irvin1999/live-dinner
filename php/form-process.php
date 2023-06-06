@@ -13,12 +13,12 @@ if (empty($_POST["date"])) {
 // ... resto del código de validación de campos ...
 
 // Dirección de correo electrónico de destino
-$EmailTo = "tucorreo@example.com"; // Reemplaza "tucorreo@example.com" con tu dirección de correo electrónico
+$EmailTo = "11snaider99@gmail.com"; // Reemplaza "tucorreo@example.com" con tu dirección de correo electrónico
 
 // Configuración del servidor SMTP de Nominalia
-$smtpHost = 'smtp.nominalia.com'; // Reemplaza con el servidor SMTP de Nominalia
-$smtpUsername = 'tucorreo@tudominio.com'; // Reemplaza con tu dirección de correo electrónico
-$smtpPassword = 'tupassword'; // Reemplaza con tu contraseña
+$smtpHost = 'bardiscoifb.com'; // Reemplaza con el servidor SMTP de Nominalia
+$smtpUsername = '11snaider99@bardiscoifb.com'; // Reemplaza con tu dirección de correo electrónico
+$smtpPassword = '@Atlantis11'; // Reemplaza con tu contraseña
 
 // Crear instancia de PHPMailer
 $mail = new PHPMailer;
