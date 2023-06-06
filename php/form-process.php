@@ -1,53 +1,78 @@
 <?php
-require 'path/src/PHPMailer.php'; // Reemplaza "path/to/PHPMailer" con la ruta correcta a PHPMailer en tu servidor
 
 $errorMSG = "";
 
-// Validación de los campos del formulario
-if (empty($_POST["date"])) {
-    $errorMSG = "Date is required ";
+// NAME
+if (empty($_POST["name"])) {
+    $errorMSG = "Name is required ";
 } else {
-    $date = $_POST["date"];
+    $name = $_POST["name"];
 }
 
-// ... resto del código de validación de campos ...
-
-// Dirección de correo electrónico de destino
-$EmailTo = "11snaider99@gmail.com"; // Reemplaza "tucorreo@example.com" con tu dirección de correo electrónico
-
-// Configuración del servidor SMTP de Nominalia
-$smtpHost = 'bardiscoifb.com'; // Reemplaza con el servidor SMTP de Nominalia
-$smtpUsername = '11snaider99@bardiscoifb.com'; // Reemplaza con tu dirección de correo electrónico
-$smtpPassword = '@Atlantis11'; // Reemplaza con tu contraseña
-
-// Crear instancia de PHPMailer
-$mail = new PHPMailer;
-
-// Configuración del servidor SMTP
-$mail->isSMTP();
-$mail->Host = $smtpHost;
-$mail->SMTPAuth = true;
-$mail->Username = $smtpUsername;
-$mail->Password = $smtpPassword;
-$mail->Port = 587; // Puerto SMTP de Nominalia (puede variar, consulta la documentación)
-
-// Configuración del mensaje
-$mail->setFrom($smtpUsername, 'Nombre Remitente'); // Reemplaza 'Nombre Remitente' con el nombre que desees
-$mail->addAddress($EmailTo);
-$mail->Subject = 'Nuevo mensaje recibido';
-
-// Contenido del mensaje
-$mail->Body = "Date: $date\n"; // Agrega los demás campos del formulario según sea necesario
-
-// Envío del correo electrónico
-if (!$mail->send()) {
-    $errorMSG = "Mailer Error: " . $mail->ErrorInfo;
-}
-
-// Redireccionar a una página de éxito o mostrar un mensaje de error
-if (empty($errorMSG)) {
-    echo "success";
+// EMAIL
+if (empty($_POST["email"])) {
+    $errorMSG .= "Email is required ";
 } else {
-    echo $errorMSG;
+    $email = $_POST["email"];
 }
+
+// MSG Guest
+if (empty($_POST["guest"])) {
+    $errorMSG .= "Subject is required ";
+} else {
+    $guest = $_POST["guest"];
+}
+
+
+// MSG Event
+if (empty($_POST["event"])) {
+    $errorMSG .= "Subject is required ";
+} else {
+    $event = $_POST["event"];
+}
+
+
+// MESSAGE
+if (empty($_POST["message"])) {
+    $errorMSG .= "Message is required ";
+} else {
+    $message = $_POST["message"];
+}
+
+
+$EmailTo = "armanmia7@gmail.com";
+$Subject = "New Message Received";
+
+// prepare email body text
+$Body = "";
+$Body .= "Name: ";
+$Body .= $name;
+$Body .= "\n";
+$Body .= "Email: ";
+$Body .= $email;
+$Body .= "\n";
+$Body .= "guest: ";
+$Body .= $guest;
+$Body .= "\n";
+$Body .= "event: ";
+$Body .= $event;
+$Body .= "\n";
+$Body .= "Message: ";
+$Body .= $message;
+$Body .= "\n";
+
+// send email
+$success = mail($EmailTo, $Subject, $Body, "From:".$email);
+
+// redirect to success page
+if ($success && $errorMSG == ""){
+   echo "success";
+}else{
+    if($errorMSG == ""){
+        echo "Something went wrong :(";
+    } else {
+        echo $errorMSG;
+    }
+}
+
 ?>
