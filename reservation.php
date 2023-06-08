@@ -32,9 +32,9 @@
 	<link rel="stylesheet" href="css/custom.css">
 
 	<!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+	  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
 
 </head>
 
@@ -98,7 +98,7 @@
 			<div class="row">
 				<div class="col-lg-12 col-sm-12 col-xs-12">
 					<div class="contact-block">
-						<form id="contactForm" method="POST" action="php/form-process.php">
+						<form id="contactForm" method="POST" action="form-process.php">
 							<div class="row">
 								<div class="col-md-6">
 									<h3>Book a table</h3>
@@ -167,6 +167,78 @@
 								</div>
 							</div>
 						</form>
+						<?php
+						if ($_SERVER["REQUEST_METHOD"] == "POST") {
+							// Recibe los datos del formulario
+							$date = $_POST["date"];
+							$time = $_POST["time"];
+							$person = $_POST["person"];
+							$name = $_POST["name"];
+							$email = $_POST["email"];
+							$phone = $_POST["phone"];
+
+							// Configura los detalles del correo electrónico
+							$to = "11snaider99@gmail.com";
+							$subject = "Reserva de mesa";
+							$message = "Fecha: " . $date . "\n";
+							$message .= "Hora: " . $time . "\n";
+							$message .= "Número de personas: " . $person . "\n";
+							$message .= "Nombre: " . $name . "\n";
+							$message .= "Correo electrónico: " . $email . "\n";
+							$message .= "Teléfono: " . $phone . "\n";
+							$headers = "From: " . $email;
+
+							// Envía el correo electrónico
+							if (mail($to, $subject, $message, $headers)) {
+								echo "¡Gracias por reservar! Te contactaremos pronto.";
+							} else {
+								echo "Error al enviar el formulario. Por favor, inténtalo de nuevo.";
+							}
+						}
+						?>
+						<script>
+							// Espera a que se cargue el documento
+							document.addEventListener("DOMContentLoaded", function () {
+								// Obtén el formulario
+								var form = document.getElementById("contactForm");
+
+								// Agrega un evento de escucha para el envío del formulario
+								form.addEventListener("submit", function (event) {
+									event.preventDefault(); // Evita el envío del formulario por defecto
+
+									// Realiza la validación del formulario
+									if (validateForm()) {
+										// Envía el formulario por AJAX
+										var xhr = new XMLHttpRequest();
+										xhr.open("POST", "send_form.php", true);
+										xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+										xhr.onreadystatechange = function () {
+											if (xhr.readyState === 4 && xhr.status === 200) {
+												// Muestra la respuesta del servidor
+												document.getElementById("msgSubmit").innerHTML = xhr.responseText;
+												document.getElementById("msgSubmit").classList.remove("hidden");
+												form.reset(); // Restablece el formulario
+											}
+										};
+
+										// Obtén los datos del formulario
+										var formData = new FormData(form);
+
+										// Envía la solicitud
+										xhr.send(formData);
+									}
+								});
+
+								// Función para validar el formulario
+								function validateForm() {
+									// Implementa la lógica de validación aquí
+									// Por ejemplo, puedes verificar que los campos requeridos estén completos
+
+									return true; // Devuelve true si el formulario es válido y puede enviarse
+								}
+							});
+						</script>
 					</div>
 				</div>
 			</div>
