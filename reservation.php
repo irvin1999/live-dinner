@@ -59,7 +59,7 @@
 							<a class="nav-link dropdown-toggle" href="#" id="dropdown-a"
 								data-toggle="dropdown">Paginas</a>
 							<div class="dropdown-menu" aria-labelledby="dropdown-a">
-								<a class="dropdown-item active" href="reservation.html">Reservacion</a>
+								<a class="dropdown-item active" href="reservation.php">Reservacion</a>
 								<a class="dropdown-item" href="stuff.html">Nuestros Trabajadores</a>
 								<a class="dropdown-item" href="gallery.html">Galeria</a>
 							</div>
