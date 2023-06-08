@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phone = $_POST["phone"];
 
     // Configura los detalles del correo electrónico
-    $to = "tucorreo@example.com";
+    $to = "11snaider99@gmail.com";
     $subject = "Reserva de mesa";
     $message = "Fecha: " . $date . "\n";
     $message .= "Hora: " . $time . "\n";
