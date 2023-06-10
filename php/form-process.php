@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     //echo $correo . " " . $nombre . " " . $mensaje;
 
-    $destinatario = "11snaider99@gmail.com";
+    $destinatario = "11snaider99@bardiscoifb.com";
     $asunto = "Reserva de mesa"; 
     $cuerpo = '
         <html> 
