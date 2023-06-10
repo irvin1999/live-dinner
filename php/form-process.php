@@ -1,42 +1,78 @@
 <?php
-error_reporting(E_ALL);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $correo = $_POST['email'];
-    $nombre = $_POST['name'];
-    $mensaje = "Fecha: ".$_POST['date']."<br>"."Hora: ".$_POST['time']."<br>"."Personas: ".$_POST['person'];
+$errorMSG = "";
 
-    //echo $correo . " " . $nombre . " " . $mensaje;
+// NAME
+if (empty($_POST["name"])) {
+    $errorMSG = "Name is required ";
+} else {
+    $name = $_POST["name"];
+}
 
-    $destinatario = "11snaider99@bardiscoifb.com";
-    $asunto = "Reserva de mesa"; 
-    $cuerpo = '
-        <html> 
-            <head> 
-                <title>Reserva de mesa</title> 
-            </head>
-            <body> 
-                <h1>Reserva de mesa</h1>
-                <p> 
-                    Nombre: '.$nombre.'<br>
-                    Correo: '.$correo.'<br>
-                    Reserva:<br>'.$mensaje.' 
-                </p> 
-            </body>
-        </html>
-    ';
-    //para el envío en formato HTML 
-    $headers = "MIME-Version: 1.0\r\n"; 
-    $headers .= "Content-type: text/html; charset=UTF8\r\n"; 
+// EMAIL
+if (empty($_POST["email"])) {
+    $errorMSG .= "Email is required ";
+} else {
+    $email = $_POST["email"];
+}
 
-    //dirección del remitente
-    $headers .= "From: $nombre <$correo>\r\n";
-    
-    if (mail($destinatario, $asunto, $cuerpo, $headers)) {
-        echo "Correo enviado";
+// MSG Guest
+if (empty($_POST["guest"])) {
+    $errorMSG .= "Subject is required ";
+} else {
+    $guest = $_POST["guest"];
+}
+
+
+// MSG Event
+if (empty($_POST["event"])) {
+    $errorMSG .= "Subject is required ";
+} else {
+    $event = $_POST["event"];
+}
+
+
+// MESSAGE
+if (empty($_POST["message"])) {
+    $errorMSG .= "Message is required ";
+} else {
+    $message = $_POST["message"];
+}
+
+
+$EmailTo = "11snaider99@bardiscoifb.com";
+$Subject = "New Message Received";
+
+// prepare email body text
+$Body = "";
+$Body .= "Name: ";
+$Body .= $name;
+$Body .= "\n";
+$Body .= "Email: ";
+$Body .= $email;
+$Body .= "\n";
+$Body .= "guest: ";
+$Body .= $guest;
+$Body .= "\n";
+$Body .= "event: ";
+$Body .= $event;
+$Body .= "\n";
+$Body .= "Message: ";
+$Body .= $message;
+$Body .= "\n";
+
+// send email
+$success = mail($EmailTo, $Subject, $Body, "From:".$email);
+
+// redirect to success page
+if ($success && $errorMSG == ""){
+   echo "success";
+}else{
+    if($errorMSG == ""){
+        echo "Something went wrong :(";
     } else {
-        echo "Error al enviar el correo";
+        echo $errorMSG;
     }
 }
+
 ?>
-<a href="reservation.html">Volver a inicio</a>
